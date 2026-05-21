@@ -17,17 +17,17 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppJaxRsIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,8 +46,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/callerName?name=reza&password=secret1");
 
         assertTrue(
-            "Should be authenticated as user reza but was not",
-            response.contains("reza"));
+            response.contains("reza"),
+            "Should be authenticated as user reza but was not");
     }
 
     @Test
@@ -55,8 +55,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/callerName");
 
         assertFalse(
-            "Should not be authenticated as user reza but was",
-            response.contains("reza"));
+            response.contains("reza"),
+            "Should not be authenticated as user reza but was");
     }
 
     @Test
@@ -64,8 +64,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/hasRoleFoo?name=reza&password=secret1");
 
         assertTrue(
-            "Should be in role foo, but was not",
-            response.contains("true"));
+            response.contains("true"),
+            "Should be in role foo, but was not");
     }
 
     @Test
@@ -73,8 +73,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/hasRoleFoo");
 
         assertTrue(
-            "Should not be in role foo, but was",
-            response.contains("false"));
+            response.contains("false"),
+            "Should not be in role foo, but was");
     }
 
     @Test
@@ -82,8 +82,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/hasRoleKaz?name=reza&password=secret1");
 
         assertFalse(
-            "Should not be in role kaz, but was",
-            response.contains("true"));
+            response.contains("true"),
+            "Should not be in role kaz, but was");
     }
 
     @Test
@@ -91,8 +91,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/resource/hasRoleKaz");
 
         assertFalse(
-            "Should not be in role kaz, but was",
-            response.contains("true"));
+            response.contains("true"),
+            "Should not be in role kaz, but was");
     }
 
     @Test
@@ -100,8 +100,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/protectedResource/sayHi?name=reza&password=secret1");
 
         assertTrue(
-            "Endpoint should have been called, but was not",
-            response.contains("saying hi!"));
+            response.contains("saying hi!"),
+            "Endpoint should have been called, but was not");
     }
 
     @Test
@@ -109,8 +109,8 @@ public class AppJaxRsIT extends ArquillianBase {
         String response = readFromServer("/rest/protectedResource/sayHi");
 
         assertFalse(
-            "Endpoint should not have been called, but was",
-            response.contains("saying hi!"));
+            response.contains("saying hi!"),
+            "Endpoint should not have been called, but was");
     }
 
 }

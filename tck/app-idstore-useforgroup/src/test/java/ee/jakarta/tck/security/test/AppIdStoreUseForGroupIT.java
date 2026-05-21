@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppIdStoreUseForGroupIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,14 +46,14 @@ public class AppIdStoreUseForGroupIT extends ArquillianBase {
     public void testIdentityStore_validationType_useforgroup() {
         String response = readFromServer("/ServletForIDStoreGroupOnly?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected the groups-only store's sentinel marker.\n" + response,
-                response.contains("useforgroup:getCallerGroups"));
-        assertTrue("Expected groups from the dedicated PROVIDE_GROUPS store.\n" + response,
-                response.contains("Oracle") && response.contains("Oracle_HQ"));
-        assertTrue("Expected the protected resource to identify the caller as tom.\n" + response,
-                response.contains("web username: tom"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("useforgroup:getCallerGroups"), "Expected the groups-only store's sentinel marker.\n" + response);
+        assertTrue(
+                response.contains("Oracle") && response.contains("Oracle_HQ"), "Expected groups from the dedicated PROVIDE_GROUPS store.\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected the protected resource to identify the caller as tom.\n" + response);
     }
 
 }

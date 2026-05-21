@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbBasicIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -50,32 +50,32 @@ public class AppDbBasicIT extends ArquillianBase {
     public void testAnnotationDBIDStore_Basic_valid() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected Administrator group.\n" + response, response.contains("Administrator"));
-        assertTrue("Expected Manager group.\n" + response, response.contains("Manager"));
-        assertTrue("Expected ValidateCallerDN=null.\n" + response, response.contains("ValidateCallerDN=null"));
-        assertTrue("Expected web username tom.\n" + response, response.contains("web username: tom"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(response.contains("Administrator"), "Expected Administrator group.\n" + response);
+        assertTrue(response.contains("Manager"), "Expected Manager group.\n" + response);
+        assertTrue(response.contains("ValidateCallerDN=null"), "Expected ValidateCallerDN=null.\n" + response);
+        assertTrue(response.contains("web username: tom"), "Expected web username tom.\n" + response);
     }
 
     @Test
     public void testAnnotationDBIDStore_Basic_pwdInvalid() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=invalid_pwd");
 
-        assertTrue("Expected INVALID status.\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response,
-                response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status.\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
     @Test
     public void testAnnotationDBIDStore_Basic_userInvalid() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=invalid_user&pwd=secret1");
 
-        assertTrue("Expected INVALID status.\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response,
-                response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status.\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
 }

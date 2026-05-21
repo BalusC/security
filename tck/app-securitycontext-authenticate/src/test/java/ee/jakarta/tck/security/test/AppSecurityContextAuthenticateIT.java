@@ -19,15 +19,15 @@ package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.Assert.assertAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppSecurityContextAuthenticateIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,14 +46,14 @@ public class AppSecurityContextAuthenticateIT extends ArquillianBase {
         String response = readFromServer("/servlet?name=reza&password=secret1");
 
         assertTrue(
-            "SecurityContext.authenticate should have succeeded.\n" + response,
-            response.contains("Authentication successed"));
+            response.contains("Authentication successed"),
+            "SecurityContext.authenticate should have succeeded.\n" + response);
 
         assertAuthenticated("context", "reza", response, "foo", "bar");
 
         assertTrue(
-            "Authenticated user should not have role \"kaz\".\n" + response,
-            response.contains("context user has role \"kaz\": false"));
+            response.contains("context user has role \"kaz\": false"),
+            "Authenticated user should not have role \"kaz\".\n" + response);
     }
 
     /**
@@ -64,8 +64,8 @@ public class AppSecurityContextAuthenticateIT extends ArquillianBase {
         String response = readFromServer("/servlet?name=reza&password=wrongpwd");
 
         assertTrue(
-            "SecurityContext.authenticate should have failed for wrong password.\n" + response,
-            response.contains("Authentication failed"));
+            response.contains("Authentication failed"),
+            "SecurityContext.authenticate should have failed for wrong password.\n" + response);
     }
 
 }

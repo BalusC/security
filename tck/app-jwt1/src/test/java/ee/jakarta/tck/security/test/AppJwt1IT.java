@@ -23,20 +23,20 @@ import java.io.UncheckedIOException;
 import org.htmlunit.DefaultCredentialsProvider;
 import org.htmlunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppJwt1IT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -62,8 +62,8 @@ public class AppJwt1IT extends ArquillianBase {
         assertEquals(401, response.getStatusCode());
 
         assertTrue(
-            "Response did not contain the \"WWW-Authenticate\" header, but should have",
-            response.getResponseHeaderValue("WWW-Authenticate") != null);
+            response.getResponseHeaderValue("WWW-Authenticate") != null,
+            "Response did not contain the \"WWW-Authenticate\" header, but should have");
 
         assertDefaultNotAuthenticated(
             response.getContentAsString());

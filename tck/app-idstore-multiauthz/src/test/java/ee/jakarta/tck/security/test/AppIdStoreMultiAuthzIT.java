@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppIdStoreMultiAuthzIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -50,13 +50,13 @@ public class AppIdStoreMultiAuthzIT extends ArquillianBase {
     public void testIdentityStore_getGroups_multiGroupStore_highPriority_valid() {
         String response = readFromServer("/ServletForMultiAuthzIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
         assertTrue(response.contains("web username: tom"));
 
         // Validation comes from one of IDStore1 or IDStore2 depending on priority order.
-        assertTrue("Expected validation sentinel from one of the validating stores.\n" + response,
-                response.contains("IDStore1:validate") || response.contains("IDStore2:validate"));
+        assertTrue(
+                response.contains("IDStore1:validate") || response.contains("IDStore2:validate"), "Expected validation sentinel from one of the validating stores.\n" + response);
 
         // Both PROVIDE_GROUPS stores must contribute their sentinel + groups.
         assertTrue(response.contains("IDStoreAuthz1:getCallerGroups"));
@@ -78,13 +78,13 @@ public class AppIdStoreMultiAuthzIT extends ArquillianBase {
     public void testIdentityStore_getGroups_multiGroupStore_lowerPriority_valid() {
         String response = readFromServer("/ServletForMultiAuthzIDStore?user=emma&pwd=secret2");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
         assertTrue(response.contains("web username: emma"));
 
         // IDStore1 is the only validating store that accepts emma/secret2.
-        assertTrue("Expected validation to fall through to IDStore1.\n" + response,
-                response.contains("IDStore1:validate"));
+        assertTrue(
+                response.contains("IDStore1:validate"), "Expected validation to fall through to IDStore1.\n" + response);
 
         // Both PROVIDE_GROUPS stores must contribute groups for emma.
         assertTrue(response.contains("IDStoreAuthz1:getCallerGroups"));

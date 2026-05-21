@@ -18,16 +18,16 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.htmlunit.DefaultCredentialsProvider;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppSecurityContextCallerDataIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,8 +47,8 @@ public class AppSecurityContextCallerDataIT extends ArquillianBase {
         String response = readFromServer("/servlet");
 
         assertTrue(
-            "Response should report context username reza.\n" + response,
-            response.contains("context username: reza"));
+            response.contains("context username: reza"),
+            "Response should report context username reza.\n" + response);
 
         assertTrue(response.contains("context user has role \"foo\": true"));
         assertTrue(response.contains("context user has role \"bar\": true"));

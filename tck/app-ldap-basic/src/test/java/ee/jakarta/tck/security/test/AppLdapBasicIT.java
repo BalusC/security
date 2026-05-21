@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppLdapBasicIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -50,31 +50,31 @@ public class AppLdapBasicIT extends ArquillianBase {
     public void testAnnotationLdapIDStore_Basic_valid() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected Administrator group.\n" + response, response.contains("Administrator"));
-        assertTrue("Expected Manager group.\n" + response, response.contains("Manager"));
-        assertTrue("Expected caller DN uid=tom,ou=caller,dc=securityapi,dc=net.\n" + response,
-                response.contains("ValidateCallerDN=uid=tom,ou=caller,dc=securityapi,dc=net"));
-        assertTrue("Expected web username tom.\n" + response, response.contains("web username: tom"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(response.contains("Administrator"), "Expected Administrator group.\n" + response);
+        assertTrue(response.contains("Manager"), "Expected Manager group.\n" + response);
+        assertTrue(
+                response.contains("ValidateCallerDN=uid=tom,ou=caller,dc=securityapi,dc=net"), "Expected caller DN uid=tom,ou=caller,dc=securityapi,dc=net.\n" + response);
+        assertTrue(response.contains("web username: tom"), "Expected web username tom.\n" + response);
     }
 
     @Test
     public void testAnnotationLdapIDStore_Basic_pwdInvalid() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom&pwd=invalid_pwd");
 
-        assertTrue("Expected INVALID status.\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response, response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status.\n" + response);
+        assertTrue(response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
     @Test
     public void testAnnotationLdapIDStore_Basic_userInvalid() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom_invalid&pwd=invalid_pwd");
 
-        assertTrue("Expected INVALID status.\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response, response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status.\n" + response);
+        assertTrue(response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
 }

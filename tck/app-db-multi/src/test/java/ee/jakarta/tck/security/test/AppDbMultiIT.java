@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbMultiIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,28 +46,28 @@ public class AppDbMultiIT extends ArquillianBase {
     public void testAnnotationDBIDStore_multi_tom() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom.\n" + response,
-                response.contains("web username: tom"));
-        assertTrue("Expected Administrator from DB store.\n" + response,
-                response.contains("Administrator"));
-        assertTrue("Expected Manager from DB store.\n" + response,
-                response.contains("Manager"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected web username tom.\n" + response);
+        assertTrue(
+                response.contains("Administrator"), "Expected Administrator from DB store.\n" + response);
+        assertTrue(
+                response.contains("Manager"), "Expected Manager from DB store.\n" + response);
     }
 
     @Test
     public void testAnnotationDBIDStore_multi_tomx() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tomx&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tomx.\n" + response,
-                response.contains("web username: tomx"));
-        assertTrue("Expected Administratorx from in-mem store.\n" + response,
-                response.contains("Administratorx"));
-        assertTrue("Expected Managerx from in-mem store.\n" + response,
-                response.contains("Managerx"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tomx"), "Expected web username tomx.\n" + response);
+        assertTrue(
+                response.contains("Administratorx"), "Expected Administratorx from in-mem store.\n" + response);
+        assertTrue(
+                response.contains("Managerx"), "Expected Managerx from in-mem store.\n" + response);
     }
 
 }

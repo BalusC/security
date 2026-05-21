@@ -21,27 +21,27 @@ import static java.lang.System.getProperty;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import java.io.IOException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.htmlunit.Page;
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppMemCustomFormIT extends ArquillianBase {
     
     // Disabled for Liberty since as of version 16.0.0.3 / 2016.9 it doesn't
@@ -55,7 +55,7 @@ public class AppMemCustomFormIT extends ArquillianBase {
         return mavenWar();
     }
 
-    @Before
+    @BeforeEach
     public void checkEnabled() {
         assumeFalse("liberty".equals(getProperty("arquillian.server")));
     }
@@ -72,9 +72,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the correct credentials
@@ -141,9 +141,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the wrong credentials
@@ -160,9 +160,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
                             .click();
         
         assertTrue(
-            "An error message should be displayed, but was not",
             page.getWebResponse().getContentAsString().contains("Authentication failed")
-        );
+        ,
+            "An error message should be displayed, but was not");
         
         // Should not be authenticted now
         assertDefaultNotAuthenticated(
@@ -182,9 +182,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the wrong credentials
@@ -201,9 +201,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
                             .click();
         
         assertTrue(
-            "An error message should be displayed, but was not",
             page.getWebResponse().getContentAsString().contains("Authentication failed")
-        );
+        ,
+            "An error message should be displayed, but was not");
         
         // Should not be authenticted now
         assertDefaultNotAuthenticated(
@@ -223,9 +223,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the wrong credentials
@@ -242,9 +242,9 @@ public class AppMemCustomFormIT extends ArquillianBase {
                             .click();
         
         assertTrue(
-            "An error message should be displayed, but was not",
             page.getWebResponse().getContentAsString().contains("Authentication failed")
-        );
+        ,
+            "An error message should be displayed, but was not");
         
         // Should not be authenticted now
         assertDefaultNotAuthenticated(

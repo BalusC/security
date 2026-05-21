@@ -18,19 +18,19 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.htmlunit.WebResponse;
 import org.htmlunit.util.NameValuePair;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamRememberMeTest1IT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -53,8 +53,8 @@ public class AppHamRememberMeTest1IT extends ArquillianBase {
         // 2. Authenticate without rememberme -> HAM is invoked
         String authedNoRemember = readFromServer("/servlet?name=reza&password=secret1");
         assertExpectedAuthenticatedContent(authedNoRemember);
-        assertTrue("Expected HAM to have been invoked.\n" + authedNoRemember,
-                authedNoRemember.contains("HAM authentication mechanism called: true"));
+        assertTrue(
+                authedNoRemember.contains("HAM authentication mechanism called: true"), "Expected HAM to have been invoked.\n" + authedNoRemember);
 
         // 3. Without remember-me cookie, anonymous request -> 401
         assertEquals(401, responseFromServer("/servlet").getStatusCode());
@@ -64,14 +64,14 @@ public class AppHamRememberMeTest1IT extends ArquillianBase {
         String rememberContent = rememberResponse.getContentAsString();
         assertExpectedAuthenticatedContent(rememberContent);
         assertCookieIsSetWithName(rememberResponse, "JSR375COOKIENAME");
-        assertTrue("Expected HAM to have been invoked on the rememberme login.\n" + rememberContent,
-                rememberContent.contains("HAM authentication mechanism called: true"));
+        assertTrue(
+                rememberContent.contains("HAM authentication mechanism called: true"), "Expected HAM to have been invoked on the rememberme login.\n" + rememberContent);
 
         // 5. Subsequent request with no credentials -> served by RememberMe, HAM not invoked
         String reaccess = readFromServer("/servlet");
         assertExpectedAuthenticatedContent(reaccess);
-        assertTrue("Expected HAM to NOT have been invoked when remember-me cookie is honoured.\n" + reaccess,
-                reaccess.contains("HAM authentication mechanism called: false"));
+        assertTrue(
+                reaccess.contains("HAM authentication mechanism called: false"), "Expected HAM to NOT have been invoked when remember-me cookie is honoured.\n" + reaccess);
 
         // 6. Logout
         readFromServer("/servlet?logout=true");
@@ -120,8 +120,8 @@ public class AppHamRememberMeTest1IT extends ArquillianBase {
     }
 
     private void assertExpectedAuthenticatedContent(String response) {
-        assertTrue("Expected user principal to be reza.\n" + response,
-                response.contains("The user principal is: reza"));
+        assertTrue(
+                response.contains("The user principal is: reza"), "Expected user principal to be reza.\n" + response);
         assertTrue(response.contains("isUserInRole(\"foo\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"bar\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"kaz\"): !false!"));
@@ -136,7 +136,7 @@ public class AppHamRememberMeTest1IT extends ArquillianBase {
                 break;
             }
         }
-        assertTrue("Expected Set-Cookie header for " + cookieName, found);
+        assertTrue(found, "Expected Set-Cookie header for " + cookieName);
     }
 
     private static void assertCookieHasAttribute(WebResponse response, String cookieName, String attribute, boolean expectPresent) {
@@ -150,9 +150,9 @@ public class AppHamRememberMeTest1IT extends ArquillianBase {
             }
         }
         if (expectPresent) {
-            assertTrue("Expected " + cookieName + " cookie to carry " + attribute + " attribute.", found);
+            assertTrue(found, "Expected " + cookieName + " cookie to carry " + attribute + " attribute.");
         } else {
-            assertFalse("Did not expect " + cookieName + " cookie to carry " + attribute + " attribute.", found);
+            assertFalse(found, "Did not expect " + cookieName + " cookie to carry " + attribute + " attribute.");
         }
     }
 

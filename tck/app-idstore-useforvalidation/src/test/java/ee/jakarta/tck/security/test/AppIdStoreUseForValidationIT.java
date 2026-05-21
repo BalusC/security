@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppIdStoreUseForValidationIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -44,12 +44,12 @@ public class AppIdStoreUseForValidationIT extends ArquillianBase {
     public void testIdentityStore_validationType_useforvalidation() {
         String response = readFromServer("/ServletForIDStoreUseForValidation?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected an empty group set (validate-only store, no PROVIDE_GROUPS store).\n" + response,
-                response.contains("ValidateResultGroups=[]"));
-        assertTrue("Expected the protected resource to identify the caller as tom.\n" + response,
-                response.contains("web username: tom"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected an empty group set (validate-only store, no PROVIDE_GROUPS store).\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected the protected resource to identify the caller as tom.\n" + response);
     }
 
 }

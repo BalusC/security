@@ -20,23 +20,23 @@ package ee.jakarta.tck.security.test;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 import ee.jakarta.tck.security.test.alternatives.ApplicationConfigImmediate;
 import ee.jakarta.tck.security.test.alternatives.LoginServletAlt;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppMemFormImmediateIT extends ArquillianBase {
     
     @Deployment(testable = false)
@@ -57,16 +57,16 @@ public class AppMemFormImmediateIT extends ArquillianBase {
         // 2. Server should redirect to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue ALT")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         // 2a. If a redirect was used, we should see the actual URL of the Servlet now
         
         assertTrue(
-            "The login page should have been reached via redirect, but was not",
             loginPage.getUrl().toString().endsWith("/login-servlet-alt")
-        );
+        ,
+            "The login page should have been reached via redirect, but was not");
 
         
         // 3. Submit the form on the login page with the correct credentials
@@ -138,9 +138,9 @@ public class AppMemFormImmediateIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the correct credentials
@@ -157,9 +157,9 @@ public class AppMemFormImmediateIT extends ArquillianBase {
                             .click();
         
         assertTrue(
-            "The error page should have been displayed, but was not",
             page.getWebResponse().getContentAsString().contains("Login failed!")
-        );
+        ,
+            "The error page should have been displayed, but was not");
         
         // Should not be authenticted now
         assertDefaultNotAuthenticated(
@@ -179,9 +179,9 @@ public class AppMemFormImmediateIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the *wrong* credentials
@@ -198,9 +198,9 @@ public class AppMemFormImmediateIT extends ArquillianBase {
                             .click();
         
         assertTrue(
-            "The error page should have been displayed, but was not",
             page.getWebResponse().getContentAsString().contains("Login failed!")
-        );
+        ,
+            "The error page should have been displayed, but was not");
         
         // Should not be authenticted now
         assertDefaultNotAuthenticated(
@@ -220,9 +220,9 @@ public class AppMemFormImmediateIT extends ArquillianBase {
         // 2. Server should forward to login page
         
         assertTrue(
-            "The login page should have been displayed, but was not",
             loginPage.getWebResponse().getContentAsString().contains("Login to continue")
-        );
+        ,
+            "The login page should have been displayed, but was not");
         
         
         // 3. Submit the form on the login page with the correct credentials

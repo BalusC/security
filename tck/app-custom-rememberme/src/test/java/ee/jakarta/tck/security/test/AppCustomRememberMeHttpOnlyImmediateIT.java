@@ -20,21 +20,21 @@ package ee.jakarta.tck.security.test;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.htmlunit.util.Cookie;
 
 import ee.jakarta.tck.security.test.alternatives.TestAuthenticationMechanismHttpOnlyFalseImmediate;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppCustomRememberMeHttpOnlyImmediateIT extends ArquillianBase {
     
     @Deployment(testable = false)
@@ -93,8 +93,8 @@ public class AppCustomRememberMeHttpOnlyImmediateIT extends ArquillianBase {
         // For the initial authentication, the mechanism should be called
         
         assertTrue(
-            "Authentication mechanism should have been called, but wasn't", 
-            response.contains("authentication mechanism called: true"));
+            response.contains("authentication mechanism called: true"),
+            "Authentication mechanism should have been called, but wasn't");
         
         
         // 3. Request same page again within same http session, without remember me
@@ -116,8 +116,8 @@ public class AppCustomRememberMeHttpOnlyImmediateIT extends ArquillianBase {
         // For the initial authentication, the mechanism should be called again
         
         assertTrue(
-            "Authentication mechanism should have been called, but wasn't", 
-            response.contains("authentication mechanism called: true"));
+            response.contains("authentication mechanism called: true"),
+            "Authentication mechanism should have been called, but wasn't");
         
         
         // 5. Request same page again within same http session, with remember me
@@ -132,8 +132,8 @@ public class AppCustomRememberMeHttpOnlyImmediateIT extends ArquillianBase {
         // (the remember me interceptor takes care of this)
         
         assertTrue(
-            "Authentication mechanism should not have been called, but was", 
-            response.contains("authentication mechanism called: false"));
+            response.contains("authentication mechanism called: false"),
+            "Authentication mechanism should not have been called, but was");
         
         
         // 6. "Expire" the session by removing all cookies except the
@@ -158,8 +158,8 @@ public class AppCustomRememberMeHttpOnlyImmediateIT extends ArquillianBase {
         // (the remember me interceptor takes care of this)
         
         assertTrue(
-            "Authentication mechanism should not have been called, but was", 
-            response.contains("authentication mechanism called: false"));
+            response.contains("authentication mechanism called: false"),
+            "Authentication mechanism should not have been called, but was");
 
         
         // 7. Logout. Should not be authenticated anymore

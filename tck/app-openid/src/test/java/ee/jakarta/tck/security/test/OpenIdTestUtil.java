@@ -17,7 +17,7 @@
 package ee.jakarta.tck.security.test;
 
 import static jakarta.ws.rs.core.Response.Status.OK;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.URL;

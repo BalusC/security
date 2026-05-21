@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamWorkflowValidateRequestWithFilterIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,8 +47,8 @@ public class AppHamWorkflowValidateRequestWithFilterIT extends ArquillianBase {
         String expected = "This is in HAM validateRequest method.Filter: In doFilter()."
                 + "In servletForValidateRequestWithFilter:doGet().principal name=reza";
 
-        assertTrue("Expected the call sequence HAM.validateRequest -> Filter.doFilter -> Servlet.doGet -> principal-name.\n" + response,
-                response.contains(expected));
+        assertTrue(
+                response.contains(expected), "Expected the call sequence HAM.validateRequest -> Filter.doFilter -> Servlet.doGet -> principal-name.\n" + response);
     }
 
 }

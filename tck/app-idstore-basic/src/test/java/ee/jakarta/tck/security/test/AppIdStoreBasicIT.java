@@ -18,16 +18,16 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppIdStoreBasicIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,16 +46,16 @@ public class AppIdStoreBasicIT extends ArquillianBase {
     public void testIdentityStoreInstall() {
         String response = readFromServer("/ServletForIDStoreBasic?user=reza&pwd=secret1");
 
-        assertTrue("Expected ValidateResultStatus=VALID.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected ValidateCallerDN=null (no DN for username/password store).\n" + response,
-                response.contains("ValidateCallerDN=null"));
-        assertTrue("Expected the validated groups to contain foo and bar.\n" + response,
-                response.contains("foo") && response.contains("bar"));
-        assertFalse("Expected getCallerGroups() NOT to have been invoked (single-store install).\n" + response,
-                response.contains("getCallerGroups"));
-        assertTrue("Expected web username reza on the protected resource.\n" + response,
-                response.contains("web username: reza"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected ValidateResultStatus=VALID.\n" + response);
+        assertTrue(
+                response.contains("ValidateCallerDN=null"), "Expected ValidateCallerDN=null (no DN for username/password store).\n" + response);
+        assertTrue(
+                response.contains("foo") && response.contains("bar"), "Expected the validated groups to contain foo and bar.\n" + response);
+        assertFalse(
+                response.contains("getCallerGroups"), "Expected getCallerGroups() NOT to have been invoked (single-store install).\n" + response);
+        assertTrue(
+                response.contains("web username: reza"), "Expected web username reza on the protected resource.\n" + response);
     }
 
 }

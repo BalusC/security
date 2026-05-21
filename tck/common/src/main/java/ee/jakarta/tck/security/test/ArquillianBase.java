@@ -28,11 +28,11 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 
 import org.htmlunit.DefaultCssErrorHandler;
 import org.htmlunit.FailingHttpStatusCodeException;
@@ -40,6 +40,7 @@ import org.htmlunit.Page;
 import org.htmlunit.WebClient;
 import org.htmlunit.WebResponse;
 
+@ExtendWith(ArquillianBase.FailedResponseLogger.class)
 public class ArquillianBase {
 
     private static final Logger logger = Logger.getLogger(ArquillianBase.class.getName());
@@ -51,26 +52,7 @@ public class ArquillianBase {
 	@ArquillianResource
     private URL base;
 
-    @Rule
-    public TestWatcher ruleExample = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            super.failed(e, description);
-
-            logger.log(SEVERE,
-                "\n\nTest failed: " +
-                description.getClassName() + "." + description.getMethodName() +
-
-                "\nMessage: " + e.getMessage() +
-
-                "\nLast response: " +
-
-                "\n\n"  + formatHTML(response) + "\n\n");
-
-        }
-    };
-
-    @Before
+    @BeforeEach
     public void setUp() {
         Logger logger = Logger.getLogger(DefaultCssErrorHandler.class.getName());
         logger.setLevel(SEVERE);
@@ -95,7 +77,7 @@ public class ArquillianBase {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         webClient.getCookieManager().clearCookies();
         webClient.close();
@@ -186,6 +168,27 @@ public class ArquillianBase {
             return parse(html, "", xmlParser()).toString();
         } catch (Exception e) {
             return html;
+        }
+    }
+
+    public static class FailedResponseLogger implements TestWatcher {
+        @Override
+        public void testFailed(ExtensionContext context, Throwable cause) {
+            Object instance = context.getTestInstance().orElse(null);
+            if (!(instance instanceof ArquillianBase)) {
+                return;
+            }
+            ArquillianBase test = (ArquillianBase) instance;
+            logger.log(SEVERE,
+                "\n\nTest failed: " +
+                context.getTestClass().map(Class::getName).orElse("?") + "." +
+                context.getTestMethod().map(java.lang.reflect.Method::getName).orElse("?") +
+
+                "\nMessage: " + cause.getMessage() +
+
+                "\nLast response: " +
+
+                "\n\n"  + formatHTML(test.response) + "\n\n");
         }
     }
 

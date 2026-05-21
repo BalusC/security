@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamWorkflowSecureResponseIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -43,13 +43,13 @@ public class AppHamWorkflowSecureResponseIT extends ArquillianBase {
     public void testHAMSecureResponse() {
         String response = readFromServer("/servlet?name=reza&password=secret1");
 
-        assertTrue("Expected the call sequence Filter.doFilter -> Servlet.doGet -> HAM.secureResponse.\n"
-                + response,
+        assertTrue(
                 response.contains("Inside Filter doFilter.")
                         && response.contains("Inside Servlet doGet.")
                         && response.contains("This is in HAM secureResponse mthod.")
                         && response.indexOf("Inside Filter doFilter.") < response.indexOf("Inside Servlet doGet.")
-                        && response.indexOf("Inside Servlet doGet.") < response.indexOf("This is in HAM secureResponse mthod."));
+                        && response.indexOf("Inside Servlet doGet.") < response.indexOf("This is in HAM secureResponse mthod."), "Expected the call sequence Filter.doFilter -> Servlet.doGet -> HAM.secureResponse.\n"
+                + response);
     }
 
 }

@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbPriorityUseForExprIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,14 +47,14 @@ public class AppDbPriorityUseForExprIT extends ArquillianBase {
     public void testAnnotationDBIDStore_priorityuseforexpr_tom() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status from in-mem store.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom.\n" + response,
-                response.contains("web username: tom"));
-        assertTrue("Expected groups from IdentityStore1.\n" + response,
-                response.contains("Administrator1") && response.contains("Manager1"));
-        assertTrue("Expected groups from DB store.\n" + response,
-                response.contains("Administrator") && response.contains("Manager"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status from in-mem store.\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected web username tom.\n" + response);
+        assertTrue(
+                response.contains("Administrator1") && response.contains("Manager1"), "Expected groups from IdentityStore1.\n" + response);
+        assertTrue(
+                response.contains("Administrator") && response.contains("Manager"), "Expected groups from DB store.\n" + response);
     }
 
     @Test
@@ -64,10 +64,10 @@ public class AppDbPriorityUseForExprIT extends ArquillianBase {
         // overall result is INVALID with no groups.
         String response = readFromServer("/ServletForDatabaseIDStore?user=emma&pwd=secret2");
 
-        assertTrue("Expected INVALID status (DB is PROVIDE_GROUPS only, in-mem rejects pwd).\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response,
-                response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status (DB is PROVIDE_GROUPS only, in-mem rejects pwd).\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
 }

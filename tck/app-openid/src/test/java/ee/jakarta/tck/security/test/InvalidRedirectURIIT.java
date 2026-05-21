@@ -19,8 +19,8 @@ package ee.jakarta.tck.security.test;
 import static ee.jakarta.tck.security.test.client.defaulttests.OpenIdConfig.OPEN_ID_CONFIG_PROPERTIES;
 import static ee.jakarta.tck.security.test.client.defaulttests.OpenIdConfig.REDIRECT_URI;
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,14 +28,14 @@ import java.net.URL;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.htmlunit.FailingHttpStatusCodeException;
 import org.htmlunit.WebClient;
@@ -48,7 +48,7 @@ import ee.jakarta.tck.security.test.client.defaulttests.SecuredServletWithEL;
  * @author Rudy De Busscher
  */
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InvalidRedirectURIIT {
 
     private WebClient webClient;
@@ -57,7 +57,7 @@ public class InvalidRedirectURIIT {
     @ArquillianResource
     private URL base;
 
-    @Before
+    @BeforeEach
     public void init() {
         webClient = new WebClient();
     }

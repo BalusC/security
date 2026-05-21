@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamWorkflowCleanSubjectIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -44,12 +44,12 @@ public class AppHamWorkflowCleanSubjectIT extends ArquillianBase {
     public void testHAMCleanSubject() {
         String response = readFromServer("/servlet?name=reza&password=secret1");
 
-        assertTrue("Expected attribute to be present before logout.\n" + response,
-                response.contains("The attribute FlagforCleanSubject exist before logout : true"));
-        assertTrue("Expected HAM.cleanSubject() to have fired.\n" + response,
-                response.contains("This is in HAM cleanSubject mthod."));
-        assertTrue("Expected attribute to be cleared after logout.\n" + response,
-                response.contains("The attribute FlagforCleanSubject exist after logout : false"));
+        assertTrue(
+                response.contains("The attribute FlagforCleanSubject exist before logout : true"), "Expected attribute to be present before logout.\n" + response);
+        assertTrue(
+                response.contains("This is in HAM cleanSubject mthod."), "Expected HAM.cleanSubject() to have fired.\n" + response);
+        assertTrue(
+                response.contains("The attribute FlagforCleanSubject exist after logout : false"), "Expected attribute to be cleared after logout.\n" + response);
     }
 
 }

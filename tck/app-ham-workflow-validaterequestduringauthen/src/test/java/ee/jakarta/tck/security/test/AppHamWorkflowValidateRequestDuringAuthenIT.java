@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamWorkflowValidateRequestDuringAuthenIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -45,11 +45,11 @@ public class AppHamWorkflowValidateRequestDuringAuthenIT extends ArquillianBase 
         String response = readFromServer("/servlet?name=reza&password=secret1");
 
         String expected = "In doGet method.In HttpAuthenticationMechanism validateRequest method.Authenticate Successful";
-        assertTrue("Expected the call sequence: doGet -> HAM.validateRequest -> Authenticate Successful.\n" + response,
-                response.contains(expected));
+        assertTrue(
+                response.contains(expected), "Expected the call sequence: doGet -> HAM.validateRequest -> Authenticate Successful.\n" + response);
 
-        assertTrue("Expected user principal to be reza.\n" + response,
-                response.contains("The user principal is: reza"));
+        assertTrue(
+                response.contains("The user principal is: reza"), "Expected user principal to be reza.\n" + response);
         assertTrue(response.contains("isUserInRole(\"foo\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"bar\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"kaz\"): !false!"));

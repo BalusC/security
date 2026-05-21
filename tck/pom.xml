@@ -192,6 +192,7 @@
         <licenseFile>${project.basedir}/LICENSE_EFTL.md</licenseFile>
         <security-api.version>5.0.0-SNAPSHOT</security-api.version>
         <arquillian.version>1.10.1.Final</arquillian.version>
+        <junit.version>5.11.4</junit.version>
 
         <!-- GlassFish + arquillian-glassfish-server-pool wiring (used by glassfish-ci-managed) -->
         <glassfish.version>9.0.0-SNAPSHOT</glassfish.version>
@@ -239,6 +240,13 @@
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
                 <version>${arquillian.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -365,15 +373,14 @@
         <!-- Test dependencies which can be used in sub-modules -->
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
             <scope>test</scope>
         </dependency>
 
