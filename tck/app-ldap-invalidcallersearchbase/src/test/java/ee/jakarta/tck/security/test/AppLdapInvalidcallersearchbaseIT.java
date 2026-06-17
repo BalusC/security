@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppLdapInvalidcallersearchbaseIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -43,9 +43,9 @@ public class AppLdapInvalidcallersearchbaseIT extends ArquillianBase {
     @Test
     public void testAnnotationLdapIDStore_invalidCallerSearchBase() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom&pwd=secret1");
-        assertTrue(response,
+        assertTrue(
                 response.contains("Exception received.")
-                || response.contains("ValidateResultStatus=INVALID"));
+                || response.contains("ValidateResultStatus=INVALID"), response);
     }
 
 }

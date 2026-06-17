@@ -18,18 +18,18 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.htmlunit.DefaultCredentialsProvider;
 import org.htmlunit.WebResponse;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamBasicIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -80,12 +80,12 @@ public class AppHamBasicIT extends ArquillianBase {
         String response = readFromServer("/servlet2");
 
         assertTrue(
-            "Response should report the BASIC HAM bean has @BasicAuthenticationMechanism qualifier.\n" + response,
-            response.contains("Have qualifier @BasicAuthenticationMechanism: true"));
+            response.contains("Have qualifier @BasicAuthenticationMechanism: true"),
+            "Response should report the BASIC HAM bean has @BasicAuthenticationMechanism qualifier.\n" + response);
 
         assertTrue(
-            "Response should report the BASIC HAM bean has @ApplicationScoped scope.\n" + response,
-            response.contains("Have scope @ApplicationScoped: true"));
+            response.contains("Have scope @ApplicationScoped: true"),
+            "Response should report the BASIC HAM bean has @ApplicationScoped scope.\n" + response);
     }
 
     private void authenticate(String username, String password) {

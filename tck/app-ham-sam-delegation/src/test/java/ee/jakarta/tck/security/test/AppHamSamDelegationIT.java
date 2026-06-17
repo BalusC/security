@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamSamDelegationIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -45,8 +45,8 @@ public class AppHamSamDelegationIT extends ArquillianBase {
     public void testSAMDelegatesHAM() {
         String response = readFromServer("/Servlet?name=reza&password=secret1");
 
-        assertTrue("Expected the HAM call stack to contain a ServerAuthModule bridge.\n" + response,
-                response.contains("The caller class has ServerAuthModule interface"));
+        assertTrue(
+                response.contains("The caller class has ServerAuthModule interface"), "Expected the HAM call stack to contain a ServerAuthModule bridge.\n" + response);
     }
 
 }

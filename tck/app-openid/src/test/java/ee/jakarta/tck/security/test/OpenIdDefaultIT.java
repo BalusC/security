@@ -23,12 +23,12 @@ import ee.jakarta.tck.security.test.client.defaulttests.SecuredServlet;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.htmlunit.WebClient;
 
@@ -38,7 +38,7 @@ import org.htmlunit.WebClient;
  * @author Rudy De Busscher
  */
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class OpenIdDefaultIT {
 
     private WebClient webClient;
@@ -47,7 +47,7 @@ public class OpenIdDefaultIT {
     @ArquillianResource
     private URL base;
 
-    @Before
+    @BeforeEach
     public void init() {
         webClient = new WebClient();
         webClient.getOptions().setTimeout(0);

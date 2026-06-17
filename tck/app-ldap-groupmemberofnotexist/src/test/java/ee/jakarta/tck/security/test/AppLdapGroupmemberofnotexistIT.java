@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppLdapGroupmemberofnotexistIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -43,9 +43,9 @@ public class AppLdapGroupmemberofnotexistIT extends ArquillianBase {
     @Test
     public void testAnnotationLdapIDStore_groupMemberOfNotExist() {
         String response = readFromServer("/ServletForLDAPIDStore?user=bobx&pwd=secret3");
-        assertTrue(response, response.contains("ValidateResultStatus=VALID"));
-        assertTrue(response, response.contains("ValidateResultGroups=[]"));
-        assertTrue(response, response.contains("web username: bobx"));
+        assertTrue(response.contains("ValidateResultStatus=VALID"), response);
+        assertTrue(response.contains("ValidateResultGroups=[]"), response);
+        assertTrue(response.contains("web username: bobx"), response);
     }
 
 }

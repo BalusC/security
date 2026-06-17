@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbNotValidatedIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -45,10 +45,10 @@ public class AppDbNotValidatedIT extends ArquillianBase {
     public void testAnnotationDBIDStore_notValidated() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected NOT_VALIDATED status (PROVIDE_GROUPS-only store).\n" + response,
-                response.contains("ValidateResultStatus=NOT_VALIDATED"));
-        assertTrue("Expected empty group set.\n" + response,
-                response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=NOT_VALIDATED"), "Expected NOT_VALIDATED status (PROVIDE_GROUPS-only store).\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
 }

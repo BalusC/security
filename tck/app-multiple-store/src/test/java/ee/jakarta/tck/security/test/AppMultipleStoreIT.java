@@ -21,12 +21,12 @@ import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppMultipleStoreIT extends ArquillianBase {
     
     @Deployment(testable = false)

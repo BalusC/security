@@ -19,16 +19,16 @@ package ee.jakarta.tck.security.test;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppCustomSessionIT extends ArquillianBase {
     
     @Deployment(testable = false)
@@ -79,8 +79,8 @@ public class AppCustomSessionIT extends ArquillianBase {
         // For the initial authentication, the mechanism should be called
         
         assertTrue(
-            "Authentication mechanism should have been called, but wasn't", 
-            response.contains("authentication mechanism called: true"));
+            response.contains("authentication mechanism called: true"),
+            "Authentication mechanism should have been called, but wasn't");
         
         
         // 3. Request same page again within same http session, should still
@@ -95,8 +95,8 @@ public class AppCustomSessionIT extends ArquillianBase {
         // (the session interceptor takes care of authentication now)
         
         assertTrue(
-            "Authentication mechanism should have been called, but wasn't", 
-            response.contains("authentication mechanism called: false"));
+            response.contains("authentication mechanism called: false"),
+            "Authentication mechanism should have been called, but wasn't");
         
         
         // 4. Logout. Should not be authenticated anymore

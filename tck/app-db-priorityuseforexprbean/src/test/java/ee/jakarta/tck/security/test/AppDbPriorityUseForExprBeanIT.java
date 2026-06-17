@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbPriorityUseForExprBeanIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,12 +47,12 @@ public class AppDbPriorityUseForExprBeanIT extends ArquillianBase {
     public void testAnnotationDBIDStore_priorityuseforexprbean_tom() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom.\n" + response,
-                response.contains("web username: tom"));
-        assertTrue("Expected groups from IdentityStore1.\n" + response,
-                response.contains("Administrator1") && response.contains("Manager1"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected web username tom.\n" + response);
+        assertTrue(
+                response.contains("Administrator1") && response.contains("Manager1"), "Expected groups from IdentityStore1.\n" + response);
     }
 
     @Test
@@ -61,12 +61,12 @@ public class AppDbPriorityUseForExprBeanIT extends ArquillianBase {
         // including VALIDATE, the DB store can validate her credentials.
         String response = readFromServer("/ServletForDatabaseIDStore?user=emma&pwd=secret2");
 
-        assertTrue("Expected VALID status from DB store.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username emma.\n" + response,
-                response.contains("web username: emma"));
-        assertTrue("Expected groups from DB store.\n" + response,
-                response.contains("Administrator") && response.contains("Employee"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status from DB store.\n" + response);
+        assertTrue(
+                response.contains("web username: emma"), "Expected web username emma.\n" + response);
+        assertTrue(
+                response.contains("Administrator") && response.contains("Employee"), "Expected groups from DB store.\n" + response);
     }
 
 }

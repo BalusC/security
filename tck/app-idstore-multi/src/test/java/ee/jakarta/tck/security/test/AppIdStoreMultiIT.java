@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppIdStoreMultiIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,19 +47,19 @@ public class AppIdStoreMultiIT extends ArquillianBase {
     public void testIdentityStoreValidate_multiIDStore() {
         // tom/secret2 -> IDStore2 validates first VALID match
         String r1 = readFromServer("/ServletForMultiIDStore?user=tom&pwd=secret2");
-        assertTrue("tom/secret2 should result in VALID.\n" + r1, r1.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom.\n" + r1, r1.contains("web username: tom"));
+        assertTrue(r1.contains("ValidateResultStatus=VALID"), "tom/secret2 should result in VALID.\n" + r1);
+        assertTrue(r1.contains("web username: tom"), "Expected web username tom.\n" + r1);
 
         // tom/secret1 -> IDStore1 validates first
         String r2 = readFromServer("/ServletForMultiIDStore?user=tom&pwd=secret1");
-        assertTrue("tom/secret1 should result in VALID.\n" + r2, r2.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected the IDStore1 sentinel group.\n" + r2, r2.contains("IDStore1:validate"));
+        assertTrue(r2.contains("ValidateResultStatus=VALID"), "tom/secret1 should result in VALID.\n" + r2);
+        assertTrue(r2.contains("IDStore1:validate"), "Expected the IDStore1 sentinel group.\n" + r2);
         assertTrue(r2.contains("web username: tom"));
 
         // emma/secret2 -> IDStore1 validates first
         String r3 = readFromServer("/ServletForMultiIDStore?user=emma&pwd=secret2");
-        assertTrue("emma/secret2 should result in VALID.\n" + r3, r3.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected the IDStore1 sentinel group.\n" + r3, r3.contains("IDStore1:validate"));
+        assertTrue(r3.contains("ValidateResultStatus=VALID"), "emma/secret2 should result in VALID.\n" + r3);
+        assertTrue(r3.contains("IDStore1:validate"), "Expected the IDStore1 sentinel group.\n" + r3);
         assertTrue(r3.contains("web username: emma"));
     }
 
@@ -70,9 +70,9 @@ public class AppIdStoreMultiIT extends ArquillianBase {
     @Test
     public void testIdentityStoreValidate_multiIDStore_INVALID() {
         String response = readFromServer("/ServletForMultiIDStore?user=tom&pwd=secret_invalid");
-        assertTrue("Expected INVALID with no groups.\n" + response,
+        assertTrue(
                 response.contains("ValidateResultStatus=INVALID")
-                        && response.contains("ValidateResultGroups=[]"));
+                        && response.contains("ValidateResultGroups=[]"), "Expected INVALID with no groups.\n" + response);
     }
 
     /**
@@ -84,8 +84,8 @@ public class AppIdStoreMultiIT extends ArquillianBase {
     public void testIdentityStoreValidate_multiIDStore_INVALIDWithNOTVALIDATED() {
         for (String caller : new String[] { "notValidated_invalid1", "notValidated_invalid2", "notValidated_invalid3" }) {
             String response = readFromServer("/ServletForMultiIDStore?user=" + caller + "&pwd=secret11");
-            assertTrue("Expected INVALID for " + caller + ".\n" + response,
-                    response.contains("ValidateResultStatus=INVALID"));
+            assertTrue(
+                    response.contains("ValidateResultStatus=INVALID"), "Expected INVALID for " + caller + ".\n" + response);
         }
     }
 
@@ -96,8 +96,8 @@ public class AppIdStoreMultiIT extends ArquillianBase {
     @Test
     public void testIdentityStoreValidate_multiIDStore_NOTVALIDATED() {
         String response = readFromServer("/ServletForMultiIDStore?user=notValidated&pwd=secret4");
-        assertTrue("Expected NOT_VALIDATED.\n" + response,
-                response.contains("ValidateResultStatus=NOT_VALIDATED"));
+        assertTrue(
+                response.contains("ValidateResultStatus=NOT_VALIDATED"), "Expected NOT_VALIDATED.\n" + response);
     }
 
 }

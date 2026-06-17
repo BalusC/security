@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppSecurityContextGetPrincipalsByTypeIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,16 +46,16 @@ public class AppSecurityContextGetPrincipalsByTypeIT extends ArquillianBase {
         String response = readFromServer("/servlet?name=reza&password=secret1");
 
         assertTrue(
-            "Response should report context username reza.\n" + response,
-            response.contains("context username: reza"));
+            response.contains("context username: reza"),
+            "Response should report context username reza.\n" + response);
 
         assertTrue(
-            "Response should report exactly one TestPrincipal in the principals set.\n" + response,
-            response.contains("PrincipalsSet size should be one: true"));
+            response.contains("PrincipalsSet size should be one: true"),
+            "Response should report exactly one TestPrincipal in the principals set.\n" + response);
 
         assertTrue(
-            "Response should report that the TestPrincipal in the set has the expected name.\n" + response,
-            response.contains("PrincipalsSet contains correct principal: true"));
+            response.contains("PrincipalsSet contains correct principal: true"),
+            "Response should report that the TestPrincipal in the set has the expected name.\n" + response);
     }
 
 }

@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbHashAlgorithmParamIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,36 +46,36 @@ public class AppDbHashAlgorithmParamIT extends ArquillianBase {
     public void testHashAlgorithmParam_with_tom_hash256_saltsize32() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom_hash256_saltsize32&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom_hash256_saltsize32.\n" + response,
-                response.contains("web username: tom_hash256_saltsize32"));
-        assertTrue("Expected Administrator+Manager groups.\n" + response,
-                response.contains("Administrator") && response.contains("Manager"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom_hash256_saltsize32"), "Expected web username tom_hash256_saltsize32.\n" + response);
+        assertTrue(
+                response.contains("Administrator") && response.contains("Manager"), "Expected Administrator+Manager groups.\n" + response);
     }
 
     @Test
     public void testHashAlgorithmParam_with_tom_hash512_saltsize16() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom_hash512_saltsize16&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom_hash512_saltsize16.\n" + response,
-                response.contains("web username: tom_hash512_saltsize16"));
-        assertTrue("Expected Administrator+Manager groups.\n" + response,
-                response.contains("Administrator") && response.contains("Manager"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom_hash512_saltsize16"), "Expected web username tom_hash512_saltsize16.\n" + response);
+        assertTrue(
+                response.contains("Administrator") && response.contains("Manager"), "Expected Administrator+Manager groups.\n" + response);
     }
 
     @Test
     public void testHashAlgorithmParam_with_tom_hash512_saltsize32() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom_hash512_saltsize32&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom_hash512_saltsize32.\n" + response,
-                response.contains("web username: tom_hash512_saltsize32"));
-        assertTrue("Expected Administrator+Manager groups.\n" + response,
-                response.contains("Administrator") && response.contains("Manager"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom_hash512_saltsize32"), "Expected web username tom_hash512_saltsize32.\n" + response);
+        assertTrue(
+                response.contains("Administrator") && response.contains("Manager"), "Expected Administrator+Manager groups.\n" + response);
     }
 
 }

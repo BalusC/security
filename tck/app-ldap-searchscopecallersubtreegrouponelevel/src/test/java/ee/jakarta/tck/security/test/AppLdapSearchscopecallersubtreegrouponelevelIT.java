@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppLdapSearchscopecallersubtreegrouponelevelIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -44,17 +44,17 @@ public class AppLdapSearchscopecallersubtreegrouponelevelIT extends ArquillianBa
     @Test
     public void testAnnotationLdapIDStore_searchScopeCallerSubTreeGroupOneLevel_tom() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom&pwd=secret1");
-        assertTrue(response, response.contains("ValidateResultStatus=VALID"));
-        assertTrue(response, response.contains("Administrator"));
-        assertTrue(response, response.contains("Manager"));
+        assertTrue(response.contains("ValidateResultStatus=VALID"), response);
+        assertTrue(response.contains("Administrator"), response);
+        assertTrue(response.contains("Manager"), response);
     }
 
     @Test
     public void testAnnotationLdapIDStore_searchScopeCallerSubTreeGroupOneLevel_subtom() {
         String response = readFromServer("/ServletForLDAPIDStore?user=subtom&pwd=secret1");
-        assertTrue(response, response.contains("ValidateResultStatus=VALID"));
-        assertTrue(response, response.contains("ValidateResultGroups=[]"));
-        assertTrue(response, response.contains("web username: subtom"));
+        assertTrue(response.contains("ValidateResultStatus=VALID"), response);
+        assertTrue(response.contains("ValidateResultGroups=[]"), response);
+        assertTrue(response.contains("web username: subtom"), response);
     }
 
 }

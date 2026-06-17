@@ -18,17 +18,17 @@ package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.htmlunit.DefaultCredentialsProvider;
 import org.htmlunit.WebResponse;
 import jakarta.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanismHandler;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 
 /**
@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
  * In this test, three instances of the build-in Basic HTTP authentication mechanism are used. The custom
  * handler invokes each one depending on the request URI that was used.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppCustomAuthenticationMechanismHandler2IT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -57,15 +57,15 @@ public class AppCustomAuthenticationMechanismHandler2IT extends ArquillianBase {
         assertEquals(401, response.getStatusCode());
 
         assertTrue(
-            "Response did not contain the \"WWW-Authenticate\" header, but should have",
-            response.getResponseHeaderValue("WWW-Authenticate") != null);
+            response.getResponseHeaderValue("WWW-Authenticate") != null,
+            "Response did not contain the \"WWW-Authenticate\" header, but should have");
 
 
         // Most important part of the test: check that we have the correct authentication mechanism instance used
 
         assertTrue(
-            "Response did not contain \"realm1\" in the \"WWW-Authenticate\" header value, but should have",
-            response.getResponseHeaderValue("WWW-Authenticate").contains("realm1"));
+            response.getResponseHeaderValue("WWW-Authenticate").contains("realm1"),
+            "Response did not contain \"realm1\" in the \"WWW-Authenticate\" header value, but should have");
 
 
         // For completion, check that authentication mechanism also actually authenticates
@@ -89,15 +89,15 @@ public class AppCustomAuthenticationMechanismHandler2IT extends ArquillianBase {
         assertEquals(401, response.getStatusCode());
 
         assertTrue(
-            "Response did not contain the \"WWW-Authenticate\" header, but should have",
-            response.getResponseHeaderValue("WWW-Authenticate") != null);
+            response.getResponseHeaderValue("WWW-Authenticate") != null,
+            "Response did not contain the \"WWW-Authenticate\" header, but should have");
 
 
         // Most important part of the test: check that we have the correct authentication mechanism instance used
 
         assertTrue(
-                "Response did not contain \"realm1\" in the \"WWW-Authenticate\" header value, but should have",
-                response.getResponseHeaderValue("WWW-Authenticate").contains("realm2"));
+                response.getResponseHeaderValue("WWW-Authenticate").contains("realm2"),
+                "Response did not contain \"realm1\" in the \"WWW-Authenticate\" header value, but should have");
 
 
         // For completion, check that authentication mechanism also actually authenticates
@@ -121,15 +121,15 @@ public class AppCustomAuthenticationMechanismHandler2IT extends ArquillianBase {
         assertEquals(401, response.getStatusCode());
 
         assertTrue(
-            "Response did not contain the \"WWW-Authenticate\" header, but should have",
-            response.getResponseHeaderValue("WWW-Authenticate") != null);
+            response.getResponseHeaderValue("WWW-Authenticate") != null,
+            "Response did not contain the \"WWW-Authenticate\" header, but should have");
 
 
         // Most important part of the test: check that we have the correct authentication mechanism instance used
 
         assertTrue(
-                "Response did not contain \"realm3\" in the \"WWW-Authenticate\" header value, but should have",
-                response.getResponseHeaderValue("WWW-Authenticate").contains("realm3"));
+                response.getResponseHeaderValue("WWW-Authenticate").contains("realm3"),
+                "Response did not contain \"realm3\" in the \"WWW-Authenticate\" header value, but should have");
 
 
         // For completion, check that authentication mechanism also actually authenticates

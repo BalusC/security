@@ -18,19 +18,19 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamCustomFormBaseIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -45,8 +45,8 @@ public class AppHamCustomFormBaseIT extends ArquillianBase {
     public void testCustomFormHAMValidateRequest() throws IOException {
         HtmlPage loginPage = pageFromServer("/servlet");
 
-        assertTrue("Expected to receive the login page.\n" + loginPage.getWebResponse().getContentAsString(),
-                loginPage.getWebResponse().getContentAsString().contains("Login"));
+        assertTrue(
+                loginPage.getWebResponse().getContentAsString().contains("Login"), "Expected to receive the login page.\n" + loginPage.getWebResponse().getContentAsString());
 
         HtmlForm form = loginPage.getForms().get(0);
         form.getInputByName("form:username").setValueAttribute("reza");
@@ -55,18 +55,18 @@ public class AppHamCustomFormBaseIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Login").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected the protected resource to identify the caller as reza.\n" + response,
-                response.contains("The user principal is: reza"));
-        assertTrue("Expected getRemoteUser() to return reza.\n" + response,
-                response.contains("getRemoteUser(): reza"));
+        assertTrue(
+                response.contains("The user principal is: reza"), "Expected the protected resource to identify the caller as reza.\n" + response);
+        assertTrue(
+                response.contains("getRemoteUser(): reza"), "Expected getRemoteUser() to return reza.\n" + response);
         assertTrue(response.contains("isUserInRole(\"foo\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"bar\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"kaz\"): !false!"));
 
         // Re-access the protected resource — the FORM session keeps the caller authenticated.
         String reaccess = readFromServer("/servlet");
-        assertTrue("Expected to remain authenticated as reza on subsequent request.\n" + reaccess,
-                reaccess.contains("The user principal is: reza"));
+        assertTrue(
+                reaccess.contains("The user principal is: reza"), "Expected to remain authenticated as reza on subsequent request.\n" + reaccess);
     }
 
     /**
@@ -78,11 +78,11 @@ public class AppHamCustomFormBaseIT extends ArquillianBase {
     public void testLoginToContinueUseRedirectToLogin() {
         HtmlPage loginPage = pageFromServer("/servlet");
 
-        assertTrue("Expected the URL to be redirected to /login.jsf.\n"
-                + loginPage.getUrl().toString(),
-                loginPage.getUrl().toString().contains("/login.jsf"));
-        assertTrue("Expected the login page content.\n" + loginPage.getWebResponse().getContentAsString(),
-                loginPage.getWebResponse().getContentAsString().contains("Login"));
+        assertTrue(
+                loginPage.getUrl().toString().contains("/login.jsf"), "Expected the URL to be redirected to /login.jsf.\n"
+                + loginPage.getUrl().toString());
+        assertTrue(
+                loginPage.getWebResponse().getContentAsString().contains("Login"), "Expected the login page content.\n" + loginPage.getWebResponse().getContentAsString());
     }
 
     /**
@@ -99,10 +99,10 @@ public class AppHamCustomFormBaseIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Login").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected an unauthenticated error page (caller principal null).\n" + response,
-                response.contains("The user principal is: null"));
-        assertTrue("Expected to land on /login-error-servlet.\n" + page.getUrl().toString(),
-                page.getUrl().toString().contains("/login-error-servlet"));
+        assertTrue(
+                response.contains("The user principal is: null"), "Expected an unauthenticated error page (caller principal null).\n" + response);
+        assertTrue(
+                page.getUrl().toString().contains("/login-error-servlet"), "Expected to land on /login-error-servlet.\n" + page.getUrl().toString());
     }
 
     /**
@@ -119,10 +119,10 @@ public class AppHamCustomFormBaseIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Login").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected the Custom-FORM HAM bean to carry @CustomFormAuthenticationMechanism.\n" + response,
-                response.contains("Have qualifier @CustomFormAuthenticationMechanism: true"));
-        assertTrue("Expected the Custom-FORM HAM bean to be @ApplicationScoped.\n" + response,
-                response.contains("Have scope @ApplicationScoped: true"));
+        assertTrue(
+                response.contains("Have qualifier @CustomFormAuthenticationMechanism: true"), "Expected the Custom-FORM HAM bean to carry @CustomFormAuthenticationMechanism.\n" + response);
+        assertTrue(
+                response.contains("Have scope @ApplicationScoped: true"), "Expected the Custom-FORM HAM bean to be @ApplicationScoped.\n" + response);
     }
 
 }

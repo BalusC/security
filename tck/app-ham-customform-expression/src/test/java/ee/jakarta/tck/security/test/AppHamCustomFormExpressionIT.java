@@ -18,16 +18,16 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.htmlunit.html.HtmlPage;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamCustomFormExpressionIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -47,12 +47,12 @@ public class AppHamCustomFormExpressionIT extends ArquillianBase {
     public void testLoginToContinueUseForwardToLoginExpression() {
         HtmlPage loginPage = pageFromServer("/servlet");
 
-        assertTrue("Expected the login page content.\n" + loginPage.getWebResponse().getContentAsString(),
-                loginPage.getWebResponse().getContentAsString().contains("Login"));
+        assertTrue(
+                loginPage.getWebResponse().getContentAsString().contains("Login"), "Expected the login page content.\n" + loginPage.getWebResponse().getContentAsString());
 
-        assertTrue("Expected the URL to reflect a redirect to /login.jsf (EL expression must override the static useForwardToLogin = true).\n"
-                + loginPage.getUrl().toString(),
-                loginPage.getUrl().toString().contains("/login.jsf"));
+        assertTrue(
+                loginPage.getUrl().toString().contains("/login.jsf"), "Expected the URL to reflect a redirect to /login.jsf (EL expression must override the static useForwardToLogin = true).\n"
+                + loginPage.getUrl().toString());
     }
 
 }

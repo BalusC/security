@@ -18,19 +18,19 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
 import org.htmlunit.html.HtmlForm;
 import org.htmlunit.html.HtmlPage;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamFormIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -52,18 +52,18 @@ public class AppHamFormIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Submit").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected user principal to be reza.\n" + response,
-                response.contains("The user principal is: reza"));
-        assertTrue("Expected getRemoteUser() to return reza.\n" + response,
-                response.contains("getRemoteUser(): reza"));
+        assertTrue(
+                response.contains("The user principal is: reza"), "Expected user principal to be reza.\n" + response);
+        assertTrue(
+                response.contains("getRemoteUser(): reza"), "Expected getRemoteUser() to return reza.\n" + response);
         assertTrue(response.contains("isUserInRole(\"foo\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"bar\"): !true!"));
         assertTrue(response.contains("isUserInRole(\"kaz\"): !false!"));
 
         // Re-access the protected resource — the FORM session remembers the caller.
         String reaccess = readFromServer("/servlet");
-        assertTrue("Expected to remain authenticated as reza on subsequent request.\n" + reaccess,
-                reaccess.contains("The user principal is: reza"));
+        assertTrue(
+                reaccess.contains("The user principal is: reza"), "Expected to remain authenticated as reza on subsequent request.\n" + reaccess);
     }
 
     /**
@@ -75,9 +75,9 @@ public class AppHamFormIT extends ArquillianBase {
         String fromProtected = readFromServer("/servlet");
         String fromLogin = readFromServer("/form-login-servlet");
 
-        assertTrue("Login page rendered on protected access should match the login page rendered directly.\n"
-                + "from /servlet:\n" + fromProtected + "\n\nfrom /form-login-servlet:\n" + fromLogin,
-                fromProtected.equals(fromLogin));
+        assertTrue(
+                fromProtected.equals(fromLogin), "Login page rendered on protected access should match the login page rendered directly.\n"
+                + "from /servlet:\n" + fromProtected + "\n\nfrom /form-login-servlet:\n" + fromLogin);
     }
 
     /**
@@ -96,8 +96,8 @@ public class AppHamFormIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Submit").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected the user principal to be null on the error page.\n" + response,
-                response.contains("The user principal is: null"));
+        assertTrue(
+                response.contains("The user principal is: null"), "Expected the user principal to be null on the error page.\n" + response);
     }
 
     /**
@@ -117,10 +117,10 @@ public class AppHamFormIT extends ArquillianBase {
         HtmlPage page = form.getInputByValue("Submit").click();
         String response = page.getWebResponse().getContentAsString();
 
-        assertTrue("Expected the FORM HAM bean to carry @FormAuthenticationMechanism.\n" + response,
-                response.contains("Have qualifier @FormAuthenticationMechanism: true"));
-        assertTrue("Expected the FORM HAM bean to be @ApplicationScoped.\n" + response,
-                response.contains("Have scope @ApplicationScoped: true"));
+        assertTrue(
+                response.contains("Have qualifier @FormAuthenticationMechanism: true"), "Expected the FORM HAM bean to carry @FormAuthenticationMechanism.\n" + response);
+        assertTrue(
+                response.contains("Have scope @ApplicationScoped: true"), "Expected the FORM HAM bean to be @ApplicationScoped.\n" + response);
     }
 
 }

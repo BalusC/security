@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppLdapUseforgroupIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -45,29 +45,29 @@ public class AppLdapUseforgroupIT extends ArquillianBase {
     @Test
     public void testIdentityStore_ldap_useforgroup_tom() {
         String response = readFromServer("/ServletForLDAPIDStore?user=tom&pwd=secret1");
-        assertTrue(response, response.contains("ValidateResultStatus=VALID"));
-        assertTrue(response, response.contains("Administrator1"));
-        assertTrue(response, response.contains("Manager1"));
-        assertTrue(response, response.contains("Administrator2"));
-        assertTrue(response, response.contains("Manager2"));
-        assertTrue(response, response.contains("IDStore2:getCallerGroups"));
+        assertTrue(response.contains("ValidateResultStatus=VALID"), response);
+        assertTrue(response.contains("Administrator1"), response);
+        assertTrue(response.contains("Manager1"), response);
+        assertTrue(response.contains("Administrator2"), response);
+        assertTrue(response.contains("Manager2"), response);
+        assertTrue(response.contains("IDStore2:getCallerGroups"), response);
         // LDAP-provided groups for top-level tom
-        assertTrue(response, response.contains("Administrator"));
-        assertTrue(response, response.contains("Manager"));
-        assertTrue(response, response.contains("web username: tom"));
+        assertTrue(response.contains("Administrator"), response);
+        assertTrue(response.contains("Manager"), response);
+        assertTrue(response.contains("web username: tom"), response);
     }
 
     @Test
     public void testIdentityStore_ldap_useforgroup_emma() {
         String response = readFromServer("/ServletForLDAPIDStore?user=emma&pwd=secret12");
-        assertTrue(response, response.contains("ValidateResultStatus=VALID"));
-        assertTrue(response, response.contains("Administrator1"));
-        assertTrue(response, response.contains("Employee1"));
-        assertTrue(response, response.contains("Administrator2"));
-        assertTrue(response, response.contains("Employee2"));
-        assertTrue(response, response.contains("Administrator"));
-        assertTrue(response, response.contains("Employee"));
-        assertTrue(response, response.contains("web username: emma"));
+        assertTrue(response.contains("ValidateResultStatus=VALID"), response);
+        assertTrue(response.contains("Administrator1"), response);
+        assertTrue(response.contains("Employee1"), response);
+        assertTrue(response.contains("Administrator2"), response);
+        assertTrue(response.contains("Employee2"), response);
+        assertTrue(response.contains("Administrator"), response);
+        assertTrue(response.contains("Employee"), response);
+        assertTrue(response.contains("web username: emma"), response);
     }
 
 }

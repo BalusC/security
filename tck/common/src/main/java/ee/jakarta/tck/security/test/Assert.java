@@ -17,23 +17,23 @@
 
 package ee.jakarta.tck.security.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class Assert {
 
     public static void assertDefaultNoAccess(String response) {
         assertFalse(
+            response.contains("This is a servlet"),
             "Should not have access to servlet, but had access.\n" +
-            response,
-            response.contains("This is a servlet"));
+            response);
     }
 
     public static void assertDefaultAccess(String response) {
         assertTrue(
+            response.contains("This is a servlet"),
             "Should have access to servlet, but had no access.\n" +
-            response,
-            response.contains("This is a servlet"));
+            response);
     }
 
     public static void assertDefaultAuthenticated(String response) {
@@ -46,29 +46,29 @@ public final class Assert {
 
     public static void assertAuthenticated(String userType, String name, String response, String... roles) {
         assertTrue(
+            response.contains(userType + " username: " + name),
             "Should be authenticated as user " + name + " but was not \n Response: \n" +
-            response + "\n search: " + userType + " username: " + name,
-            response.contains(userType + " username: " + name));
+            response + "\n search: " + userType + " username: " + name);
 
         for (String role : roles) {
             assertTrue(
+                response.contains(userType + " user has role \"" + role + "\": true"),
                 "Authenticated user should have role \"" + role + "\", but did not \n Response: \n" +
-                response,
-                response.contains(userType + " user has role \"" + role + "\": true"));
+                response);
         }
     }
 
     public static void assertNotAuthenticated(String userType, String name, String response, String... roles) {
         assertFalse(
+            response.contains(userType + " username: " + name),
             "Should not be authenticated as user " + name + " but was \n Response: \n" +
-            response + "\n search: " + userType + " username: " + name,
-            response.contains(userType + " username: " + name));
+            response + "\n search: " + userType + " username: " + name);
 
         for (String role : roles) {
             assertFalse(
+                response.contains(userType + " user has role \"" + role + "\": true"),
                 "Authenticated user should not have role \"" + role + "\", but did \n Response: \n" +
-                response,
-                response.contains(userType + " user has role \"" + role + "\": true"));
+                response);
         }
     }
 

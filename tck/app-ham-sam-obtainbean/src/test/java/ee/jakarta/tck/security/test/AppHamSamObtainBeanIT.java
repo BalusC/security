@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppHamSamObtainBeanIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -46,8 +46,8 @@ public class AppHamSamObtainBeanIT extends ArquillianBase {
     public void testSAMObtainBean() {
         String response = readFromServer("/servlet");
 
-        assertTrue("Expected the SAM to retrieve the HAM bean via CDI.\n" + response,
-                response.contains("The CDI services is fully available, ServerAuthModule method can obtain bean through CDI"));
+        assertTrue(
+                response.contains("The CDI services is fully available, ServerAuthModule method can obtain bean through CDI"), "Expected the SAM to retrieve the HAM bean via CDI.\n" + response);
     }
 
 }

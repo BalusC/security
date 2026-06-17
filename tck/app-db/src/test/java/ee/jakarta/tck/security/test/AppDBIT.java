@@ -20,20 +20,20 @@ import static ee.jakarta.tck.security.test.Assert.assertDefaultAuthenticated;
 import static ee.jakarta.tck.security.test.Assert.assertDefaultNotAuthenticated;
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
 import static java.lang.System.getProperty;
-import static org.junit.Assume.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDBIT extends ArquillianBase {
     
     // Disabled for Liberty since as of version 16.0.0.3 / 2016.9 it doesn't
@@ -47,7 +47,7 @@ public class AppDBIT extends ArquillianBase {
         return mavenWar();
     }
 
-    @Before
+    @BeforeEach
     public void checkEnabled() {
     	assumeFalse("liberty".equals(getProperty("arquillian.server")));
     }

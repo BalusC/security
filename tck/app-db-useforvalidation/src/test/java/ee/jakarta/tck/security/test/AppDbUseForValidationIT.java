@@ -18,15 +18,15 @@
 package ee.jakarta.tck.security.test;
 
 import static ee.jakarta.tck.security.test.ShrinkWrap.mavenWar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AppDbUseForValidationIT extends ArquillianBase {
 
     @Deployment(testable = false)
@@ -48,34 +48,34 @@ public class AppDbUseForValidationIT extends ArquillianBase {
     public void testValid_inMem_higherPriority() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=tom&pwd=secret1");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected web username tom.\n" + response,
-                response.contains("web username: tom"));
-        assertTrue("Expected at least one group from the in-mem store.\n" + response,
-                response.contains("Administrator1") || response.contains("Manager1"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("web username: tom"), "Expected web username tom.\n" + response);
+        assertTrue(
+                response.contains("Administrator1") || response.contains("Manager1"), "Expected at least one group from the in-mem store.\n" + response);
     }
 
     @Test
     public void testValid_db_validateOnly() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=emma&pwd=secret2");
 
-        assertTrue("Expected VALID status.\n" + response,
-                response.contains("ValidateResultStatus=VALID"));
-        assertTrue("Expected empty group set (DB store is VALIDATE-only and in-mem rejects).\n" + response,
-                response.contains("ValidateResultGroups=[]"));
-        assertTrue("Expected web username emma.\n" + response,
-                response.contains("web username: emma"));
+        assertTrue(
+                response.contains("ValidateResultStatus=VALID"), "Expected VALID status.\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set (DB store is VALIDATE-only and in-mem rejects).\n" + response);
+        assertTrue(
+                response.contains("web username: emma"), "Expected web username emma.\n" + response);
     }
 
     @Test
     public void testInvalid_unknownUser() {
         String response = readFromServer("/ServletForDatabaseIDStore?user=invalid_user&pwd=secret2");
 
-        assertTrue("Expected INVALID status.\n" + response,
-                response.contains("ValidateResultStatus=INVALID"));
-        assertTrue("Expected empty group set.\n" + response,
-                response.contains("ValidateResultGroups=[]"));
+        assertTrue(
+                response.contains("ValidateResultStatus=INVALID"), "Expected INVALID status.\n" + response);
+        assertTrue(
+                response.contains("ValidateResultGroups=[]"), "Expected empty group set.\n" + response);
     }
 
 }
